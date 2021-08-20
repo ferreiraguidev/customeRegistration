@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>didnt work perfectly before</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="/materialize\css\materialize.css" media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="/materialize.min.css" media="screen,projection"/>
+</head>
+
+<body>
+<h1>Registro de Clientes com Registro de lista de Serviços por cada cliente </h1>
+
+<div class="row">
+    <form action="/saveCustomer" method="post" th:object="${customerObj}" class="col s12">
+        <label>Adicionar Novo Cliente</label>
+
+        <div class="row">
+            <div class="input-field col s6">
+                <label>Carro</label>
+                <input name="car" th:field="*{car}">
+            </div>
+            <div class="input-field col s6">
+                <label>Nome</label>
+                <input name="name" th:field="*{name}">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s6">
+                <label>Contato</label>
+                <input name="contact" th:field="*{contact}">
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                    <label>Placa</label>
+                    <input name="registration" th:field="*{registration}">
+                </div>
+            </div>
+        </div>
+
+        <input name="id" th:field="*{id}"
+               readonly="readonly">
+
+
+        <input class="waves-effect waves-light btn" type="submit" value="Salvar">
+    </form>
+</div>
+
+<br/>
+<br/>
+
+<div class="row">
+    <div class="row">
+        <div class="input-field col 12">
+            <form action="searchCustomer" method="post">
+                <label>Buscar Cliente</label>
+                <input name="searchByName">
+                <input class="waves-effect waves-light btn" type="submit" value="Buscar"/>
+                <a class="waves-effect waves-light btn" href="/listCustomers">Ver Todos os Clientes</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>Nome</th>
+        <th>Contato</th>
+        <th>Carro</th>
+        <th>Placa</th>
+
+    </tr>
+    </thead>
+
+    <tr th:each="customer: ${customers}">
+        <td><a th:href="@{/services/{customerId}(customerId=${customer.id})}"><span th:text="${customer.name}"></span></a></td>
+        <td th:text="${customer.contact}"></td>
+        <td th:text="${customer.car}"></td>
+        <td th:text="${customer.registration}"></td>
+        <td><a th:href="@{/editCustomer/{customerId}(customerId=${customer.id})}">Editar</a></td>
+        <td><a th:href="@{/deleteCustomer/{customerId}(customerId=${customer.id})}">Deletar</a></td>
+    </tr>
+</table>
+
+
+<script type="text/javascript" src="materialize/js/materialize.js"></script>
+<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+</body>
+</html>
