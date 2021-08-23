@@ -1,7 +1,9 @@
 package com.business.customeregistration.controller;
 
 import com.business.customeregistration.model.Customer;
+import com.business.customeregistration.model.Servicos;
 import com.business.customeregistration.repository.CustomerRepository;
+import com.business.customeregistration.repository.ServicosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,10 @@ public class CustomerController {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private ServicosRepository servicosRepository;
+
 
     @RequestMapping(method = RequestMethod.GET, value = "/customerRegistration")
     public ModelAndView init() {
@@ -85,14 +91,29 @@ public class CustomerController {
     }
 
     @GetMapping("/services/{customerId}")
-    public ModelAndView service (@PathVariable("customerId") Long customerId) {
+    public ModelAndView service(@PathVariable("customerId") Long customerId) {
 
         Optional<Customer> customer = customerRepository.findById(customerId);
-        ModelAndView modelAndView = new ModelAndView("customerRegistration");
+        ModelAndView modelAndView = new ModelAndView("services");
         modelAndView.addObject("customerObj", customer.get());
 
         return modelAndView;
 
     }
+
+    @PostMapping("**/addService/{customerId}")
+    public ModelAndView addServices(Servicos servicos,
+                                    @PathVariable("customerId") Long customerId) {
+
+        Customer customer = customerRepository.findById(customerId).get();
+        servicos.setCustomer(customer);
+        servicosRepository.save(servicos);
+        ModelAndView modelAndView = new ModelAndView("services");
+        modelAndView.addObject("customerObj",customer);
+        return modelAndView;
+
+
+    }
+
 }
 
