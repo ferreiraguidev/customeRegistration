@@ -33,6 +33,18 @@ public class CustomerController {
 
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/sales")
+    public ModelAndView sales() {
+
+        ModelAndView modelAndView = new ModelAndView("sales");
+        modelAndView.addObject("customerObj", new Customer());
+        Iterable<Customer> customerIterable = customerRepository.findAll();
+        modelAndView.addObject("customers", customerIterable);
+
+        return modelAndView;
+
+    }
+
     @RequestMapping(method = RequestMethod.POST, value = "/saveCustomer")
     public ModelAndView save(Customer customer) {
         customerRepository.save(customer);
@@ -108,6 +120,7 @@ public class CustomerController {
         Customer customer = customerRepository.findById(customerId).get();
         servicos.setCustomer(customer);
         servicosRepository.save(servicos);
+
         ModelAndView modelAndView = new ModelAndView("services");
         modelAndView.addObject("customerObj",customer);
         return modelAndView;
