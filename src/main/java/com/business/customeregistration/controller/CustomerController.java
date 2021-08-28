@@ -108,6 +108,7 @@ public class CustomerController {
         Optional<Customer> customer = customerRepository.findById(customerId);
         ModelAndView modelAndView = new ModelAndView("services");
         modelAndView.addObject("customerObj", customer.get());
+        modelAndView.addObject("servicos",servicosRepository.getServicos(customerId));
 
         return modelAndView;
 
@@ -123,6 +124,7 @@ public class CustomerController {
 
         ModelAndView modelAndView = new ModelAndView("services");
         modelAndView.addObject("customerObj",customer);
+        modelAndView.addObject("servicos",servicosRepository.getServicos(customerId));
         return modelAndView;
 
 
